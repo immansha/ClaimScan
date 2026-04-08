@@ -1,0 +1,283 @@
+[
+  {
+    "observation": {
+      "claim_id": "H-001",
+      "customer_id": "CUST-777",
+      "tenure_days": 200,
+      "past_claims_12m": 1,
+      "policy_type": "auto",
+      "policy_limit": 50000,
+      "policy_start_date": "2025-12-01",
+      "covered_damages": ["collision", "weather", "theft", "fire", "vandalism", "glass"],
+      "damage_type": "theft",
+      "incident_date": "2026-01-10",
+      "filing_date": "2026-01-15",
+      "claim_amount": 6000,
+      "deductible": 500,
+      "required_docs": ["police_report"],
+      "docs_submitted": ["police_report"],
+      "avg_amount_for_damage_type": 3500,
+      "queue_position": 1,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 5500,
+      "fraud_rules": ["F5"],
+      "priority": "P1"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-002",
+      "customer_id": "CUST-777",
+      "tenure_days": 210,
+      "past_claims_12m": 1,
+      "policy_type": "home",
+      "policy_limit": 200000,
+      "policy_start_date": "2025-12-01",
+      "covered_damages": ["fire", "storm", "theft", "vandalism", "water_damage", "lightning"],
+      "damage_type": "theft",
+      "incident_date": "2026-01-20",
+      "filing_date": "2026-01-25",
+      "claim_amount": 10000,
+      "deductible": 1000,
+      "required_docs": ["police_report"],
+      "docs_submitted": ["police_report"],
+      "avg_amount_for_damage_type": 5000,
+      "queue_position": 2,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 9000,
+      "fraud_rules": ["F5"],
+      "priority": "P1"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-003",
+      "customer_id": "CUST-777",
+      "tenure_days": 220,
+      "past_claims_12m": 1,
+      "policy_type": "health",
+      "policy_limit": 1000000,
+      "policy_start_date": "2025-12-01",
+      "covered_damages": ["accident", "illness", "surgery", "emergency", "prescription"],
+      "damage_type": "emergency",
+      "incident_date": "2026-02-01",
+      "filing_date": "2026-02-05",
+      "claim_amount": 7000,
+      "deductible": 500,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 6000,
+      "queue_position": 3,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 6500,
+      "fraud_rules": ["F5"],
+      "priority": "P1"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-004",
+      "customer_id": "CUST-H-4",
+      "tenure_days": 365,
+      "past_claims_12m": 0,
+      "policy_type": "auto",
+      "policy_limit": 50000,
+      "policy_start_date": "2025-01-01",
+      "covered_damages": ["collision", "weather", "theft", "fire", "vandalism", "glass"],
+      "damage_type": "collision",
+      "incident_date": "2026-04-10",
+      "filing_date": "2026-04-09",
+      "claim_amount": 4000,
+      "deductible": 500,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 3000,
+      "queue_position": 4,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 3500,
+      "fraud_rules": ["F4"],
+      "priority": "P3"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-005",
+      "customer_id": "CUST-H-5",
+      "tenure_days": 90,
+      "past_claims_12m": 0,
+      "policy_type": "health",
+      "policy_limit": 1000000,
+      "policy_start_date": "2025-12-01",
+      "covered_damages": ["accident", "illness", "surgery", "emergency", "prescription"],
+      "damage_type": "surgery",
+      "incident_date": "2026-01-15",
+      "filing_date": "2026-01-20",
+      "claim_amount": 15000,
+      "deductible": 1000,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 300,
+      "queue_position": 5,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 14000,
+      "fraud_rules": ["F6"],
+      "priority": "P2"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-006",
+      "customer_id": "CUST-H-6",
+      "tenure_days": 400,
+      "past_claims_12m": 0,
+      "policy_type": "home",
+      "policy_limit": 200000,
+      "policy_start_date": "2024-01-01",
+      "covered_damages": ["fire", "storm", "theft", "vandalism", "water_damage", "lightning"],
+      "damage_type": "theft",
+      "incident_date": "2026-02-10",
+      "filing_date": "2026-02-15",
+      "claim_amount": 8000,
+      "deductible": 500,
+      "required_docs": ["police_report"],
+      "docs_submitted": ["photos"],
+      "avg_amount_for_damage_type": 4500,
+      "queue_position": 6,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 7500,
+      "fraud_rules": ["F7"],
+      "priority": "P1"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-007",
+      "customer_id": "CUST-H-7",
+      "tenure_days": 3650,
+      "past_claims_12m": 0,
+      "policy_type": "auto",
+      "policy_limit": 50000,
+      "policy_start_date": "2015-01-01",
+      "covered_damages": ["collision", "weather", "theft", "fire", "vandalism", "glass"],
+      "damage_type": "glass",
+      "incident_date": "2026-03-01",
+      "filing_date": "2026-03-03",
+      "claim_amount": 800,
+      "deductible": 100,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 750,
+      "queue_position": 7,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 700,
+      "fraud_rules": [],
+      "priority": "P4"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-008",
+      "customer_id": "CUST-H-8",
+      "tenure_days": 365,
+      "past_claims_12m": 0,
+      "policy_type": "home",
+      "policy_limit": 200000,
+      "policy_start_date": "2024-01-01",
+      "covered_damages": ["fire", "storm", "theft", "vandalism", "water_damage", "lightning"],
+      "damage_type": "fire",
+      "incident_date": "2026-01-10",
+      "filing_date": "2026-01-20",
+      "claim_amount": 12000,
+      "deductible": 2000,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 11000,
+      "queue_position": 8,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 10000,
+      "fraud_rules": [],
+      "priority": "P2"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-009",
+      "customer_id": "CUST-H-9",
+      "tenure_days": 600,
+      "past_claims_12m": 2,
+      "policy_type": "health",
+      "policy_limit": 1000000,
+      "policy_start_date": "2024-01-01",
+      "covered_damages": ["accident", "illness", "surgery", "emergency", "prescription"],
+      "damage_type": "prescription",
+      "incident_date": "2026-02-01",
+      "filing_date": "2026-02-05",
+      "claim_amount": 300,
+      "deductible": 0,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 250,
+      "queue_position": 9,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 300,
+      "fraud_rules": [],
+      "priority": "P4"
+    }
+  },
+  {
+    "observation": {
+      "claim_id": "H-010",
+      "customer_id": "CUST-H-10",
+      "tenure_days": 45,
+      "past_claims_12m": 3,
+      "policy_type": "auto",
+      "policy_limit": 50000,
+      "policy_start_date": "2025-12-15",
+      "covered_damages": ["collision", "weather", "theft", "fire", "vandalism", "glass"],
+      "damage_type": "vandalism",
+      "incident_date": "2026-01-10",
+      "filing_date": "2026-01-20",
+      "claim_amount": 11000,
+      "deductible": 1000,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 7000,
+      "queue_position": 10,
+      "queue_length": 10
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 10000,
+      "fraud_rules": ["F2"],
+      "priority": "P2"
+    }
+  }
+]
+

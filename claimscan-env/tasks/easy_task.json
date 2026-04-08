@@ -1,0 +1,31 @@
+[
+  {
+    "observation": {
+      "claim_id": "E-001",
+      "customer_id": "CUST-EASY-1",
+      "tenure_days": 730,
+      "past_claims_12m": 0,
+      "policy_type": "auto",
+      "policy_limit": 50000,
+      "policy_start_date": "2024-01-01",
+      "covered_damages": ["collision", "weather", "theft", "fire", "vandalism", "glass"],
+      "damage_type": "weather",
+      "incident_date": "2026-03-01",
+      "filing_date": "2026-03-04",
+      "claim_amount": 2000,
+      "deductible": 500,
+      "required_docs": [],
+      "docs_submitted": [],
+      "avg_amount_for_damage_type": 2000,
+      "queue_position": 1,
+      "queue_length": 1
+    },
+    "ground_truth": {
+      "covered": true,
+      "payout": 1500,
+      "fraud_rules": [],
+      "priority": "P3"
+    }
+  }
+]
+

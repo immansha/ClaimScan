@@ -1,0 +1,18 @@
+# Secrets and local env files
+.env
+*.env
+claimscan-env/.env
+
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local logs/temp files
+*.log
+claimscan-env/pip-install-tail.txt
