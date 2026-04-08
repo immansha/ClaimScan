@@ -233,7 +233,7 @@
       "policy_limit": 1000000,
       "policy_start_date": "2024-01-01",
       "covered_damages": ["accident", "illness", "surgery", "emergency", "prescription"],
-      "damage_type": "prescription",
+      "damage_type": "dental",
       "incident_date": "2026-02-01",
       "filing_date": "2026-02-05",
       "claim_amount": 300,
@@ -245,8 +245,8 @@
       "queue_length": 10
     },
     "ground_truth": {
-      "covered": true,
-      "payout": 300,
+      "covered": false,
+      "payout": 0,
       "fraud_rules": [],
       "priority": "P4"
     }

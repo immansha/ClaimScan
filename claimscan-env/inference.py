@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import os
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 
 from dotenv import load_dotenv
 from openai import OpenAI, OpenAIError, RateLimitError
@@ -14,14 +14,19 @@ from models import Action, Observation
 load_dotenv()
 
 
+ENV_NAME = "claimscan"
+DEFAULT_BASE_URL = "https://router.huggingface.co/v1"
+DEFAULT_MODEL = "meta-llama/Llama-3.3-70B-Instruct"
+SUCCESS_THRESHOLD = {"easy": 0.9, "medium": 0.8, "hard": 0.7}
+TASK_MAX_STEPS = {"easy": 5, "medium": 15, "hard": 30}
+
+
 def _make_client() -> OpenAI:
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("HF_TOKEN") or os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise RuntimeError("OPENAI_API_KEY is not set.")
-    base_url = os.getenv("API_BASE_URL")
-    if base_url:
-        return OpenAI(api_key=api_key, base_url=base_url)
-    return OpenAI(api_key=api_key)
+        raise RuntimeError("HF_TOKEN (or OPENAI_API_KEY fallback) is not set.")
+    base_url = os.getenv("API_BASE_URL", DEFAULT_BASE_URL)
+    return OpenAI(api_key=api_key, base_url=base_url)
 
 
 def _call_model(client: OpenAI, model: str, observation: Observation) -> Action:
@@ -77,39 +82,53 @@ def run_task(task_id: str, client: OpenAI, model_name: str) -> Tuple[float, int]
     obs = env.reset(task_id=task_id, seed=42)
     total_reward = 0.0
     steps = 0
+    reward_history: List[float] = []
 
-    print(f"[START] task={task_id}")
+    print(f"[START] task={task_id} env={ENV_NAME} model={model_name}")
 
     done = False
     warned_fallback = False
     while not done:
         steps += 1
-        print(f"[STEP] task={task_id} step={steps} observation_claim_id={obs.claim_id}")
+        error: str | None = None
 
         try:
             action = _call_model(client, model_name, obs)
         except RateLimitError as exc:
             if not warned_fallback:
-                print(f"[WARN] task={task_id} using local fallback due to quota/rate limit: {exc}")
                 warned_fallback = True
+            error = str(exc)
             action = _local_fallback_action(obs)
         except OpenAIError as exc:
             if not warned_fallback:
-                print(f"[WARN] task={task_id} using local fallback due to OpenAI error: {exc}")
                 warned_fallback = True
+            error = str(exc)
             action = _local_fallback_action(obs)
 
         next_obs, reward, done, info = env.step(action)
         total_reward += reward
+        reward_history.append(reward)
+        error_repr = "null" if error is None else json.dumps(error)
+        print(
+            f"[STEP] step={steps} action={action.model_dump_json()} "
+            f"reward={reward:.2f} done={str(done).lower()} error={error_repr}"
+        )
         obs = next_obs if next_obs is not None else obs
 
-    print(f"[END] task={task_id} total_reward={total_reward:.4f} steps={steps}")
+    max_steps = TASK_MAX_STEPS[task_id]
+    score = max(0.0, min(total_reward / max_steps, 1.0))
+    success = score >= SUCCESS_THRESHOLD[task_id]
+    all_rewards_str = ",".join(f"{r:.2f}" for r in reward_history)
+    print(
+        f"[END] success={str(success).lower()} steps={steps} "
+        f"score={score:.2f} rewards={all_rewards_str}"
+    )
     return total_reward, steps
 
 
 def main() -> None:
     client = _make_client()
-    model_name = os.getenv("MODEL_NAME", "gpt-4o")
+    model_name = os.getenv("MODEL_NAME", DEFAULT_MODEL)
 
     results: Dict[str, Dict[str, float | int]] = {}
     for task_id in ["easy", "medium", "hard"]:

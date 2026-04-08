@@ -10,6 +10,10 @@ from pydantic import BaseModel, ValidationError
 
 from coverage_rules import damage_is_covered
 from fraud_rules import FraudContext, evaluate_fraud_rules
+from graders.base_grader import ClaimGroundTruth
+from graders.easy_grader import grade_episode as grade_easy
+from graders.hard_grader import grade_episode as grade_hard
+from graders.medium_grader import grade_episode as grade_medium
 from models import Action, Observation
 from payout_calculator import calculate_payout
 from priority_rules import calculate_priority
@@ -34,9 +38,9 @@ class EpisodeState:
 
 
 TASK_CONFIG = {
-    "easy": {"loader": load_easy_task, "max_steps": 5},
-    "medium": {"loader": load_medium_task, "max_steps": 15},
-    "hard": {"loader": load_hard_task, "max_steps": 30},
+    "easy": {"loader": load_easy_task, "max_steps": 5, "success_threshold": 0.9},
+    "medium": {"loader": load_medium_task, "max_steps": 15, "success_threshold": 0.8},
+    "hard": {"loader": load_hard_task, "max_steps": 30, "success_threshold": 0.7},
 }
 
 
@@ -115,9 +119,9 @@ class ClaimScanEnv:
         gt = claim_entry["ground_truth"]
 
         coverage_correct = 0.25 if bool(action.covered) == bool(gt["covered"]) else 0.0
-        payout_correct = (
-            0.25 if abs(action.payout - float(gt["payout"])) <= 0.01 else 0.0
-        )
+        expected_payout = float(gt["payout"])
+        payout_error_pct = abs(action.payout - expected_payout) / max(expected_payout, 1.0)
+        payout_correct = 0.25 * max(0.0, 1.0 - payout_error_pct * 5.0)
         fraud_correct = 0.25 if set(action.fraud_rules) == set(gt["fraud_rules"]) else 0.0
         priority_correct = 0.25 if action.priority == gt["priority"] else 0.0
 
@@ -194,6 +198,11 @@ class ResetRequest(BaseModel):
     seed: Optional[int] = None
 
 
+class GradeRequest(BaseModel):
+    task_id: str
+    actions: List[Action]
+
+
 @app.post("/reset")
 def api_reset(req: ResetRequest) -> Observation:
     try:
@@ -227,6 +236,34 @@ def api_state() -> Dict[str, Any]:
 @app.get("/health")
 def api_health() -> Dict[str, str]:
     return {"status": "ok"}
+
+
+@app.post("/grade")
+def api_grade(req: GradeRequest) -> Dict[str, Any]:
+    if req.task_id not in TASK_CONFIG:
+        raise HTTPException(status_code=400, detail=f"Unknown task_id: {req.task_id}")
+
+    claims = TASK_CONFIG[req.task_id]["loader"]()
+    truths = [ClaimGroundTruth.model_validate(entry["ground_truth"]) for entry in claims]
+    actions = req.actions[: len(truths)]
+
+    if req.task_id == "easy":
+        score = grade_easy(actions, truths)
+    elif req.task_id == "medium":
+        score = grade_medium(actions, truths)
+    else:
+        score = grade_hard(actions, truths)
+
+    threshold = TASK_CONFIG[req.task_id]["success_threshold"]
+    return {
+        "task_id": req.task_id,
+        "score": score,
+        "success_threshold": threshold,
+        "success": score >= threshold,
+        "total_claims": len(truths),
+        "actions_received": len(req.actions),
+        "actions_scored": len(actions),
+    }
 
 
 @app.get("/")

@@ -46,6 +46,13 @@ def _fraud_sets_equal(pred: Iterable[str], truth: Iterable[str]) -> bool:
     return set(pred) == set(truth)
 
 
+def _payout_component(predicted_payout: float, expected_payout: float, weight: float) -> float:
+    """Graduated payout credit: full near exact, decays with percentage error."""
+
+    error_pct = abs(predicted_payout - expected_payout) / max(expected_payout, 1.0)
+    return weight * max(0.0, 1.0 - error_pct * 5.0)
+
+
 def score_claim(
     action: Action,
     ground_truth: ClaimGroundTruth,
@@ -56,9 +63,7 @@ def score_claim(
 
     coverage_correct = config.coverage_weight if action.covered == ground_truth.covered else 0.0
 
-    payout_correct = (
-        config.payout_weight if abs(action.payout - ground_truth.payout) <= 0.01 else 0.0
-    )
+    payout_correct = _payout_component(action.payout, ground_truth.payout, config.payout_weight)
 
     fraud_correct = (
         config.fraud_weight

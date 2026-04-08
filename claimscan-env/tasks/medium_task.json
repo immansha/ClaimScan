@@ -62,7 +62,7 @@
       "tenure_days": 20,
       "past_claims_12m": 1,
       "policy_type": "home",
-      "policy_limit": 200000,
+      "policy_limit": 50000,
       "policy_start_date": "2026-03-01",
       "covered_damages": ["fire", "storm", "theft", "vandalism", "water_damage", "lightning"],
       "damage_type": "fire",
@@ -89,11 +89,11 @@
       "customer_id": "CUST-M-4",
       "tenure_days": 3650,
       "past_claims_12m": 0,
-      "policy_type": "home",
+      "policy_type": "auto",
       "policy_limit": 200000,
       "policy_start_date": "2015-01-01",
-      "covered_damages": ["fire", "storm", "theft", "vandalism", "water_damage", "lightning"],
-      "damage_type": "storm",
+      "covered_damages": ["collision", "weather", "theft", "fire", "vandalism", "glass"],
+      "damage_type": "water_damage",
       "incident_date": "2026-01-10",
       "filing_date": "2026-01-15",
       "claim_amount": 500,
@@ -105,8 +105,8 @@
       "queue_length": 5
     },
     "ground_truth": {
-      "covered": true,
-      "payout": 400,
+      "covered": false,
+      "payout": 0,
       "fraud_rules": [],
       "priority": "P4"
     }
