@@ -1,7 +1,7 @@
 name: claimscan-env
 version: 1.0.0
 description: Insurance claims processing benchmark with deterministic fraud detection
-author: Your Name
+author: mansha 
 tags:
   - insurance
   - fraud-detection
