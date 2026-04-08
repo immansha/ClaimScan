@@ -27,7 +27,7 @@ openenv/
 
 ### 1. Navigate to project root
 ```cmd
-cd C:\Users\imman\OneDrive\Desktop\openenv
+cd C:\..\
 ```
 
 ### 2. Activate virtual environment (if not already active)
