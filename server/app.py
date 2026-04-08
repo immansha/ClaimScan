@@ -1,5 +1,21 @@
 """Server entry point for ClaimScan environment."""
 
+from __future__ import annotations
+
+import os
+
+import uvicorn
+
 from claimscan_env.environment import app
 
-__all__ = ["app"]
+
+def main() -> None:
+    """Callable server entrypoint expected by OpenEnv validator."""
+
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "7860"))
+    uvicorn.run(app, host=host, port=port)
+
+
+if __name__ == "__main__":
+    main()
