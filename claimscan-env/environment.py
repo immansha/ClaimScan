@@ -204,8 +204,10 @@ class GradeRequest(BaseModel):
 
 
 @app.post("/reset")
-def api_reset(req: ResetRequest) -> Observation:
+def api_reset(req: Optional[ResetRequest] = None) -> Observation:
     try:
+        if req is None:
+            req = ResetRequest(task_id="easy")
         return _env.reset(task_id=req.task_id, seed=req.seed)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
