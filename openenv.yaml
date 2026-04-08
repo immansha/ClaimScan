@@ -1,0 +1,22 @@
+name: claimscan-env
+version: 1.0.0
+description: Insurance claims processing benchmark with deterministic fraud detection
+author: mansha 
+tags:
+  - insurance
+  - fraud-detection
+  - claims
+  - openenv
+tasks:
+  - id: easy
+    description: Single claim, no fraud, basic coverage and math
+    max_steps: 5
+    success_threshold: 0.9
+  - id: medium
+    description: 5 claims with mixed fraud signals (F1, F2, F3)
+    max_steps: 15
+    success_threshold: 0.8
+  - id: hard
+    description: 10 claims with connected fraud (F5) and complex cases
+    max_steps: 30
+    success_threshold: 0.7
