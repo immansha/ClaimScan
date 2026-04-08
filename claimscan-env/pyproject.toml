@@ -1,9 +1,0 @@
-[project]
-name = "claimscan-env"
-version = "1.0.0"
-description = "Insurance claims processing benchmark with deterministic fraud detection"
-requires-python = ">=3.11"
-
-[project.scripts]
-server = "server.app:main"
-
