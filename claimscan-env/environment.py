@@ -228,3 +228,13 @@ def api_state() -> Dict[str, Any]:
 def api_health() -> Dict[str, str]:
     return {"status": "ok"}
 
+
+@app.get("/")
+def api_root() -> Dict[str, Any]:
+    return {
+        "name": "ClaimScan OpenEnv Environment",
+        "status": "ok",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
